@@ -47,7 +47,7 @@ public class ResultActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-//                textView.setText(progress + "/" + seekBar.getMax());
+                //textView.setText(progress + "/" + seekBar.getMax());
             }
         });
 
@@ -66,7 +66,7 @@ public class ResultActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-//                textView.setText(progress + "/" + seekBar.getMax());
+
             }
         });
 
