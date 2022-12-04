@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -14,7 +16,7 @@ public class ResultActivity extends AppCompatActivity {
     private SeekBar seekBarHeight, seekBarWeight;
     private Integer currentHeight, currentWeight;
     private TextView resultText, resultHeight, resultWeight;
-
+    private Button calculateBmi, calculateBmr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,16 +25,17 @@ public class ResultActivity extends AppCompatActivity {
         seekBarHeight = findViewById(R.id.seekBar1);
         seekBarWeight = findViewById(R.id.seekBar2);
         resultText = findViewById(R.id.textResult);
+        calculateBmi = findViewById(R.id.calculateBmiBtn);
+        calculateBmr = findViewById(R.id.calculateBmrBtn);
         resultHeight = findViewById(R.id.resultHeight);
         resultWeight = findViewById(R.id.resultWeight);
         currentHeight = seekBarHeight.getProgress();
         currentWeight = seekBarWeight.getProgress();
-        String gender = getIntent().getStringExtra("gender");
-        String age = getIntent().getStringExtra("age");
 
         seekBarHeight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBar.setMax(300);
                 currentHeight = progress;
                 resultHeight.setText(progress + "/" + seekBar.getMax());
             }
@@ -51,6 +54,7 @@ public class ResultActivity extends AppCompatActivity {
         seekBarWeight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBar.setMax(150);
                 currentWeight = progress;
                 resultWeight.setText(progress + "/" + seekBar.getMax());
             }
@@ -65,9 +69,23 @@ public class ResultActivity extends AppCompatActivity {
 //                textView.setText(progress + "/" + seekBar.getMax());
             }
         });
+
+        calculateBmi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateBmi();
+            }
+        });
+
+        calculateBmr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateBmr();
+            }
+        });
     }
 
-    public void calculateBmi(View view) {
+    public void calculateBmi() {
         String inputHeight = currentHeight.toString();
         String inputWeight = currentWeight.toString();
 
@@ -79,10 +97,6 @@ public class ResultActivity extends AppCompatActivity {
         String bmiInterpretation = interpretBMI(bmiValue);
 
         resultText.setText(bmiValue + " kg/m2 - " + bmiInterpretation);
-
-        /*Intent i = new Intent(this, ResultActivity.class);
-//        i.putExtra("calculator", BMI);
-        startActivity(i);*/
     }
 
     private float calculateBMI (float weight, float height) {
@@ -104,19 +118,19 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
-    public void calculateBmr(View view) {
+    public void calculateBmr() {
         String inputHeight = currentHeight.toString();
         String inputWeight = currentWeight.toString();
-        String inputAge = gender;
+        String getAge = getIntent().getStringExtra("age");
+        String getGender = getIntent().getStringExtra("gender");
 
-        double result = 0.0;
+        double result;
         double weight = Double.parseDouble(inputWeight);
         double height = Double.parseDouble(inputHeight);
-        double age = Double.parseDouble(inputAge);
-        String gender = selectedGenderBtn.getText().toString();
+        double age = Double.parseDouble(getAge);
 
-        DecimalFormat format = new DecimalFormat("0.00");
-        if (gender.equals("Male")) {
+//        DecimalFormat format = new DecimalFormat("0.00");
+        if (getGender.equals("Male")) {
             result =66.4730 + (13.7516 * weight) + (5.0033 * height) - (6.7550 * age);
         } else {
             result = 655.0955 + (9.5634 * weight) + (1.8496 * height) - (4.6756 * age);

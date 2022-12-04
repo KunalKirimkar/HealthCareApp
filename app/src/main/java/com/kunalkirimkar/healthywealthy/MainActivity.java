@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton selectedGenderBtn;
     private RadioGroup genderGroup;
     private Button resultButton;
-    private String selectedGender = "Male";
+    private final String selectedGender = "Male";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
